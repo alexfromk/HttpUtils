@@ -14,8 +14,8 @@ import ua.ak.utils.base.CustomRuntimeException;
 
 
 /**
- * утилиты общего назначения
- * +++
+ * Утилиты общего назначения
+ * 
  * @author alexk
  *
  */
