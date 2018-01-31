@@ -53,8 +53,7 @@ public class CustomRuntimeException extends RuntimeException
 	@Override
 	public String getMessage()
 	{
-		String result = super.getMessage() + ((getMessageExt().length() > 0)
-				? " - " + getMessageExt() : "");
+		String result = super.getMessage() + ((getMessageExt().length() > 0)? " - " + getMessageExt() : "");
 		return result;
 	}
 
