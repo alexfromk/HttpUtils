@@ -59,7 +59,7 @@ public class CustomRuntimeException extends RuntimeException
 
 	String getMessageExt()
 	{
-		return extMess;
+		return extMess==null?"":extMess;
 	}
 
 }
