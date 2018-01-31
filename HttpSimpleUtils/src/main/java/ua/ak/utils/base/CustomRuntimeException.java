@@ -2,6 +2,7 @@ package ua.ak.utils.base;
 
 /***********************************************************************
  * Module: CustomRuntimeException.java 
+ * message 2
  * Author: Alex 
  * Purpose: Генератор исключений CustomRuntimeException
  ***********************************************************************/
