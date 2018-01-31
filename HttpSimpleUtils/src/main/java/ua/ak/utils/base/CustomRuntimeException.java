@@ -32,7 +32,7 @@ public class CustomRuntimeException extends RuntimeException
 			}
 			if (parentException.getMessage() != null
 					&& parentException.getMessage().length() > 0)
-				this.extMess += " (parent message: "
+				this.extMess += " (Parent message: "
 						+ parentException.getMessage() 
 						+ (parentException.getCause()!=null?" cause: "+parentException.getCause().getClass().getName()+" - "+parentException.getCause().getMessage():"")
 						+ ")";
