@@ -58,12 +58,15 @@ import ua.ak.utils.model.HTTPTransportInfo;
 
 
 /**
- * утилиты работы с HTTP-клиентом
- * - удобно для потребителей REST-сервисов
- * - удобно для http-запросов  
- * Пример использования:
+ * Utility class for simplified work with Apache HTTP Client  
+ * Example for use:
+ * 
+ * HttpTransportInfo httpTransportInfo=new HttpTransportInfo();
+ * //ini http transport parameters
+ * 
+ *  //make request
  * 			ResponseFromHTTP res = RestUtils.getInstance(httpTransportInfo)
-			.setUri("/lzE3Loader/scheduler")
+			.setUri("/loader/scheduler")
 			.addParameter("aa","wwww")
 			.addHeader("head_test","head_aaaaa")
 			.setMethodGet()
@@ -75,12 +78,12 @@ import ua.ak.utils.model.HTTPTransportInfo;
 public class RestUtils
 {
 	/**
-	 * описание метода REST
+	 * Request definition
 	 */
 	RequestDefinition restMethodDef=null;
 	
 	/**
-	 * описание транспорта REST
+	 * Transport definition
 	 */
 	HTTPTransportInfo httpTransportInfo=null;
 	
@@ -92,7 +95,8 @@ public class RestUtils
 	
 	
 	/**
-	 * получить новый экземпляр утилит для работы- начинаем с этого :)
+	 * Get new instance of RestUtils
+	 * First method for begin work
 	 * @param httpTransportInfo
 	 * @return
 	 */
@@ -125,7 +129,7 @@ public class RestUtils
 
 
 	/**
-	 * добавить новый http-параметр
+	 * Add new http-parameter
 	 * @param name
 	 * @param value
 	 * @return
@@ -137,7 +141,7 @@ public class RestUtils
 	}
 
 	/**
-	 * добавить новый http-заголовок
+	 * Add new http-header
 	 * @param name
 	 * @param value
 	 * @return
@@ -149,7 +153,7 @@ public class RestUtils
 	}
 
 	/**
-	 * установить тип запроса POST
+	 * Set request method - POST
 	 * @return
 	 */
 	public RestUtils setMethodPost()
@@ -159,7 +163,7 @@ public class RestUtils
 	}
 
 	/**
-	 * установить тип запроса GET
+	 * Set request method - GET
 	 * @return
 	 */
 	public RestUtils setMethodGet()
@@ -169,7 +173,7 @@ public class RestUtils
 	}
 
 	/**
-	 * установить тип запроса DELETE
+	 * Set request method - DELETE
 	 * @return
 	 */
 	public RestUtils setMethodDelete()
@@ -179,7 +183,7 @@ public class RestUtils
 	}
 
 	/**
-	 * установить тип запроса OPTIONS
+	 * Set request method - OPTIONS
 	 * @return
 	 */
 	public RestUtils setMethodOptions()
@@ -189,7 +193,7 @@ public class RestUtils
 	}
 
 	/**
-	 * установить тип запроса Put
+	 * Set request method - Put
 	 * @return
 	 */
 	public RestUtils setMethodPut()
@@ -204,9 +208,9 @@ public class RestUtils
 	}
 
 	/**
-	 * установить тело запроса POST,
-	 * Толькто для запросов типа POST
-	 *  Если оно установлено, то игнорируются операции addParameter(String, String)  
+	 * Set body for POST-request,
+	 * Only for POST-request,
+	 * If it was set, then will be ignored any call like addParameter(String, String)  
 	 * @param postBody
 	 */
 	public RestUtils setPostBody(String postBody)
@@ -217,7 +221,7 @@ public class RestUtils
 
 	
 	/**
-	 * установить признак "тело ответа получить в бинарном виде"
+	 * Set option "obtain body in binary format" (will be save into ByteArray[])
 	 * @param binaryResponseBody
 	 */
 	public RestUtils setBinaryResponseBody(boolean binaryResponseBody)
@@ -227,14 +231,13 @@ public class RestUtils
 	}
 
 	/**
-	 * Использовать оригинальный URI
+	 * Forced use original URI
 	 * @param useOriginalURI
-	 * ==false (default) uri преобразуется через URIBuilder, все праметры из URI извлекаются
-	 *         и передаются в соответствии с правилами метода GET, POST ...
-	 * ==true  uri НЕ изменяется и передается в запрос как есть, 
-	 * для НЕ POST запросов - все addParam  игнорируются(они должны передаться в URI) 
-	 * для POST запросов - все addParam  обрабатываются и передаются по правилам POST запросов 
-	 * @return
+	 * ==false (default) uri will transformed by URIBuilder, all parameters will be extracted from URI
+	 *         and are passed in accordance with the rules of the GET method, POST ...
+	 * == true uri is NOT changed and sent to the request as is,
+	 * for NOT POST requests - all addParams are ignored (they must be passed to the URI)
+	 * for POST requests - all addParam are processed and passed according to the rules of POST requests	 * @return
 	 */
 	public RestUtils setUseOriginalURI(boolean useOriginalURI)
 	{
@@ -244,7 +247,7 @@ public class RestUtils
 
 
 	/**
-	 * Главный метод  - сделать HTTP-запрос
+	 * Main final method  - make HTTP-request
 	 * @return
 	 * @throws ExceptionLZCommon
 	 */
@@ -286,7 +289,7 @@ public class RestUtils
 			//https
 			if("https".equalsIgnoreCase(httpTransportInfo.getProtocol()))
 			{
-				//A.K. - заглушили проверку сертификата - deprecated from 4.4.1
+				//A.K. - Set stub for check certificate - deprecated from 4.4.1
 				SSLContextBuilder sslContextBuilder=SSLContexts.custom();
 				TrustStrategyLZ trustStrategyLZ=new TrustStrategyLZ();
 				sslContextBuilder.loadTrustMaterial(null,trustStrategyLZ);
@@ -326,7 +329,7 @@ public class RestUtils
 			PathParser parsedPath=new PathParser(getUri());
 			if(restMethodDef.isUseOriginalURI())
 			{
-				//в этом случае параметры из URI не добавляются ко всем параметрам
+				//in this case params from URI will not add to all params
 				parsedPath.getParams().clear();
 			}
 			parsedPath.getParams().addAll(getRequestDefinition().getParams());
@@ -334,7 +337,7 @@ public class RestUtils
 			URIBuilder uriBuilder = new URIBuilder().setPath(parsedPath.getUri());
 			if(!getRequestDefinition().isHttpMethodPost())
 			{
-				//параметры формы - GET/DELETE/OPTIONS/PUT
+				//form's parameters - GET/DELETE/OPTIONS/PUT
 				for(NameValuePair nameValuePair : parsedPath.getParams())
 				{
 					uriBuilder.setParameter(nameValuePair.getName(),nameValuePair.getValue());
@@ -378,7 +381,7 @@ public class RestUtils
 				}
 			}
 
-			//Дополнительные заголовки из httpTransportInfo
+			//Additional HTTP headers from httpTransportInfo
 			if(httpTransportInfo.getAddHeaders()!=null)
 			{
 				for(Map.Entry<String, String> entry:httpTransportInfo.getAddHeaders().entrySet())
@@ -391,7 +394,7 @@ public class RestUtils
 				}
 			}
 			httpPostOrGetEtc.setConfig(requestConfig);
-			//параметры формы POST
+			//Form's parameters, request POST
 			if(getRequestDefinition().isHttpMethodPost())
 			{
 				if(getPostBody()!=null)
@@ -406,7 +409,7 @@ public class RestUtils
 				}
 			}
 
-			//Body формы PUT
+			//Body for PUT
 			if(getRequestDefinition().getHttpMethod()==HttpMethod.PUT)
 			{
 				if(getPostBody()!=null)
@@ -470,7 +473,7 @@ public class RestUtils
 	}
 	
 	/**
-	 * парсер пути к ресурсу
+	 * Path parser to resource
 	 * @author alexk
 	 *
 	 */
@@ -537,42 +540,42 @@ public class RestUtils
 	}
 	
 	/**
-	 * модель - описание запроса для http, например клиента метода REST-сервиса
+	 * Data transfer object - request definition
 	 * @author alexk
 	 *
 	 */
 	public static class RequestDefinition
 	{
 		/**
-		 * URI запроса
+		 * URI for request
 		 */
 		String uri="";
 		
-		/**Список параметров для передачи**/		
+		/**Parameter list for transmission**/		
 		List<NameValuePair> params=new ArrayList<NameValuePair>();
 		
-		/**Карта http-заголовков для передачи**/
+		/**Map of http-headers for transmission**/
 		List<NameValuePair> headers=new ArrayList<NameValuePair>();
 		
-		/**HTTP-метод **/
+		/**HTTP-method **/
 		HttpMethod httpMethod=HttpMethod.POST;
 		
 		/**
-		 *тело запроса для POST/PUT
-		 *имеет более высокий приоритет перед пост-параметрами 
+		 * Request body for POST / PUT
+		 * has a higher priority over post-parameters		 
 		 */
 		String postBody=null;
 		
-		/**получить response body в бинарном виде**/
+		/** get response body in binary form**/
 		boolean binaryResponseBody=false;
 		
 		/**
-		 * Использовать оригинальный URI
-		 * ==false (default) uri преобразуется через URIBuilder, все праметры из URI извлекаются
-		 *         и передаются в соответствии с правилами метода GET, POST ...
-		 * ==true  uri НЕ изменяется и передается в запрос как есть, 
-		 * для НЕ POST запросов - все addParam  игнорируются(они должны передаться в URI) 
-		 * для POST запросов - все addParam  обрабатываются и передаются по правилам POST запросов 
+		 * Use the original URI
+		 * == false (default) uri is converted via URIBuilder, all the parameters from the URI are extracted
+		 * and are passed in accordance with the rules of the GET method, POST ...
+		 * == true uri is NOT changed and sent to the request as is,
+		 * for NOT POST requests - all addParams are ignored (they must be passed to the URI)
+		 * for POST requests - all addParam are processed and passed according to the rules of POST requests
 		 */
 		boolean useOriginalURI=false;
 		/**
@@ -648,10 +651,9 @@ public class RestUtils
 		}
 
 		/**
-		 * установить тело запроса POST,
-		 * Толькто для запросов типа POST
-		 *  Если оно установлено, то игнорируются операции addParameter(String, String)  
-		 * @param postBody
+		 * set the body of the POST request,
+		 * Only for POST type requests
+		 * If it is set, the operations addParameter (String, String)		 * @param postBody
 		 */
 		public void setPostBody(String postBody)
 		{
@@ -704,14 +706,14 @@ public class RestUtils
 
 	public static class ResponseFromHTTP
 	{
-		/**Код возврата по http**/
+		/**Return code by http**/
 		int resultCode=-1;
-		/**Заголовки HTTP**/
+		/**HTTP Headers**/
 		Header[] allHeaders=null;
 		String body="";
-		/**body для бинарных ответов**/
+		/**body for binary responses**/
 		byte[] bodyBin=null;
-		/**body - бинарное**/
+		/**is binary body - **/
 		boolean binaryBody=false;
 		
 		public ResponseFromHTTP()
@@ -737,7 +739,7 @@ public class RestUtils
 		}
 
 		/**
-		 * получить список заголовков по имени
+		 * get a list of headers by name
 		 * @param name
 		 * @return
 		 * ==null - not found
@@ -760,12 +762,12 @@ public class RestUtils
 		}
 		
 		/**
-		 * получить список элементов по имени заголовка и имени элемента
+		 * get a list of items by name and item name
 		 * @param headerName
-		 * @param elementName - имя элемента (параметра заголовка)
-		 * если == null - то все элементы отдаем
+		 * @param elementName - name of the element (header parameter)
+		 * if == null - then all the elements are given
 		 * @return
-		 * если == null - нет такого 
+		 * if == null - there is no such 
 		 */
 		public List<String>getHeaderElementByName(String headerName,String elementName)
 		{

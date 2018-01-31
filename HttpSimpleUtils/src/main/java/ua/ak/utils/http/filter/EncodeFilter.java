@@ -7,11 +7,13 @@ import javax.servlet.*;
 
 
 /**
- * Фильтр вх.-вых.кодировки сервлета
- * Устанавливается в web.xml
+ * Simple encode filter for HTTP-servlet
+ * Can be used in common(sharet) lib, for example in tomcat/lib
+ * 
+ * Set in  web.xml
  *      <filter>
  *		<filter-name>CharacterEncodingFilter</filter-name>
- *		<filter-class>ua.lz.crm.http.filter.EncodeFilter</filter-class>
+ *		<filter-class>ua.ak.utils.http.filter.EncodeFilter</filter-class>
  *		<init-param>
  *			<param-name>requestEncoding</param-name>
  *			<param-value>UTF-8</param-value>
@@ -23,16 +25,16 @@ import javax.servlet.*;
 		
 public class EncodeFilter implements Filter
 {	
-	//Кодировка по умолчанию
+	//Default encoding
 	private static String defaultEncoding = "UTF-8";
 
-	//Карта web-приложение(hashCode of filter) - кодировка
+	//Map web-application(hashCode of filter) - encoding
 	private static HashMap<String, String> enc = new HashMap<String, String>();
 
 	private static final String attrNameFilterEncoding ="FilterEncoding1";
 	
 	/**
-	 * Вернуть кодировку по умолчанию
+	 * Get default encoding
 	 */
 	public static String getCurrentEncoding()
 	{
@@ -40,7 +42,7 @@ public class EncodeFilter implements Filter
 	}
 
 	/**
-	 * Вернуть кодировку для текущего web-приложения
+	 * Get encoding for current web-application
 	 */
 	public static String getCurrentEncoding(ServletRequest request)
 	{
@@ -56,7 +58,6 @@ public class EncodeFilter implements Filter
 		{
 			enc.put(getKeyThisFilter(),currentEncoding);
 		}						
-		// EncodeFilter.currentEncoding = currentEncoding;
 	}
 
 	String getCurrentFilterEncoding()
@@ -78,7 +79,7 @@ public class EncodeFilter implements Filter
 
 		if ((encoding != null) && (encoding.length() > 0))
 		{
-			//Помним в карте кодировку для текущего фильтра
+			//Store encoding for current filter to map
 			setCurrentEncoding(encoding);
 		}					
 	}
@@ -92,7 +93,7 @@ public class EncodeFilter implements Filter
 		{
 			request.setCharacterEncoding(currEnc);
 		}
-		//Текущая кодировка - помним в аттр.
+		//Current encoding, save to attrubutes
 		request.setAttribute(attrNameFilterEncoding,currEnc);
 		//Debug-check map.size
 		//System.out.println("EncodeFilter-enc.size()="+enc.size());
