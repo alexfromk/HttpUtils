@@ -3,7 +3,7 @@ package ua.ak.utils.base;
 /***********************************************************************
  * Module: CustomRuntimeException.java 
  * Author: Alex 
- * Purpose: Генератор исключений CustomRuntimeException
+ * Purpose: Custom RuntimeException 
  ***********************************************************************/
 
 public class CustomRuntimeException extends RuntimeException
@@ -13,10 +13,10 @@ public class CustomRuntimeException extends RuntimeException
 	String extMess = "";
 
 	/**
-	 * Расширенный конструктор для создания ошибки
+	 * Extended constructor
 	 * 
-	 * @param mess - сообщение
-	 * @param parentException - исключение родителя
+	 * @param mess - message
+	 * @param parentException - parent Exception, can be null
 	 **/
 	public CustomRuntimeException(String mess, Exception parentException)
 	{
@@ -39,9 +39,9 @@ public class CustomRuntimeException extends RuntimeException
 	}
 
 	/**
-	 * Основной конструктор для создания ошибки
+	 * Main constructor
 	 * 
-	 * @param mess  - сообщение
+	 * @param mess  - message
 	 */
 	public CustomRuntimeException(String mess)
 	{
